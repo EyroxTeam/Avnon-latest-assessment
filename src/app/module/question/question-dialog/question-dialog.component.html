@@ -1,0 +1,49 @@
+<form [formGroup]="questionForm">
+    <div class="w-100">
+        <ng-container *ngIf="!questionForm.get('type')?.value">
+            <div class="inputField w-100">
+                <h2>Select Question Format</h2>
+                <mat-radio-group formControlName="type">
+                    <mat-radio-button value="paragraph">Paragraph Answer</mat-radio-button>
+                    <mat-radio-button value="checkbox">Checkbox List</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </ng-container>
+    
+        <ng-container *ngIf="questionForm.get('type')?.value == 'paragraph'">
+            <h3>New Question</h3>
+            <div class="inputField w-100">
+                <mat-form-field appearance="outline">
+                    <mat-label>Question</mat-label>
+                    <input matInput formControlName="question">
+                </mat-form-field>
+            </div>
+        </ng-container>
+    
+        <ng-container *ngIf="questionForm.get('type')?.value == 'checkbox'">
+            <h3>New Question</h3>
+            <div class="inputField w-100">
+                <mat-form-field appearance="outline">
+                    <mat-label>Question</mat-label>
+                    <input matInput formControlName="question">
+                </mat-form-field>
+            </div>
+            <div formArrayName="answers" *ngFor="let item of answers.controls; let i = index;">
+                <div [formGroupName]="i">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Answer</mat-label>
+                        <input matInput formControlName="answerText">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div>
+                <button mat-flat-button (click)="newAnswer()" color="primary" variant="outlined">Add new answer</button>
+            </div>
+        </ng-container>
+    </div>
+        
+    <div class="actionBtn">
+        <button type="button" mat-flat-button mat-dialog-close (click)="questionForm.reset()">Cancel</button>
+        <button type="submit" [disabled]="questionForm.invalid" mat-flat-button (click)="closeDialog()" color="primary">Submit</button>
+    </div>
+</form>
